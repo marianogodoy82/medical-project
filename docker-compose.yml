@@ -1,0 +1,63 @@
+networks:
+  medical-network:
+    driver: bridge
+
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - auth-service
+      - medical-service
+    environment:
+      - SPRING_APPLICATION_NAME=api-gateway
+    networks:
+      - medical-network
+
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo-db
+    networks:
+      - medical-network
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo-db:27017/authdb
+      JWT_SECRET: "secretoMuySeguroParaFirmarJWTconUnaClaveMasLarga"
+      SERVER_PORT: 8081
+
+  medical-service:
+    build:
+      context: ./medical-service
+      dockerfile: Dockerfile
+    container_name: medical-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongo-db
+    networks:
+      - medical-network
+    environment:
+      - SPRING_APPLICATION_NAME=medical-service
+
+  mongo-db:
+    image: mongo:6.0
+    container_name: mongo-db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - medical-network
+
+volumes:
+  mongo_data:

@@ -1,0 +1,36 @@
+server.port: 8080
+
+logging.level:
+  org:
+    springdoc: DEBUG
+    springframework: DEBUG
+  io.swagger.v3: DEBUG
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: Auth Service
+        url: /auth/v3/api-docs
+      - name: Medical Service
+        url: /medical-records/v3/api-docs
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  packages-to-scan: com.challenge.apigateway
+  show-actuator: true
+spring:
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: auth-service
+            uri: http://auth-service:8081
+            predicates:
+              - Path=/auth/**
+          - id: medical-service
+            uri: http://medical-service:8082
+            predicates:
+              - Path=/medical-records/**
+  application:
+    name: api-gateway
