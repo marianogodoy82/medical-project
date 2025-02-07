@@ -25,8 +25,8 @@ public class AuthController {
             request.email(),
             request.password(),
             request.firstName(),
-            request.lastName()
-      );
+            request.lastName(),
+            request.role());
       return ResponseEntity.ok(Map.of("token", token));
    }
 

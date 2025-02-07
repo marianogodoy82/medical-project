@@ -6,7 +6,7 @@ spring:
         name: auth-service
     data:
         mongodb:
-            uri: mongodb://localhost:27017/authdb
+            uri: mongodb://mongo-db:27017/authdb
 
     docker:
         compose:
@@ -16,7 +16,10 @@ jwt:
     secret: L0zCapQbtILtj4aTZqaUP9mbKn7MykRfRern8u1jn8g=
     expiration: 3600000  # 1 hora en milisegundos
 
-logging.level:
-    org:
-        springdoc: DEBUG
-    io.swagger.v3: DEBUG
+logging:
+    level:
+        org:
+            springdoc: DEBUG
+            springframework: DEBUG
+        root: INFO
+        io.swagger.v3: DEBUG

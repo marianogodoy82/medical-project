@@ -17,24 +17,22 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-
    private final UserRepository userRepository;
    private final JwtUtil jwtUtil;
    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-   public String register(String email, String password, String firstName, String lastName) {
+   public String register(String email, String password, String firstName, String lastName, String role) {
       userRepository.findByEmail(email)
                     .ifPresent(user -> {
-                       throw new EmailAlreadyExistException("El email ya está en uso");
+                       throw new EmailAlreadyExistException(STR."El email \{user} ya está en uso");
                     });
 
-      final User user = User
-            .builder()
+      final User user = User.builder()
             .email(email)
             .password(passwordEncoder.encode(password))
             .firstName(firstName)
             .lastName(lastName)
-            .roles(new HashSet<>(Set.of("USER")))
+            .roles(new HashSet<>(Set.of(role)))
             .build();
       userRepository.save(user);
       return jwtUtil.generateToken(user);
