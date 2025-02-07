@@ -13,8 +13,10 @@ jwt:
   secret: L0zCapQbtILtj4aTZqaUP9mbKn7MykRfRern8u1jn8g=
   expiration: 3600000  # 1 hora en milisegundos
 
-logging.level:
-  org.springdoc: DEBUG
-  org.springframework: DEBUG
-  com.challenge.medicalservice: DEBUG
-  io.swagger.v3: DEBUG
+logging:
+  level:
+    org:
+      springdoc: DEBUG
+      springframework: DEBUG
+    root: INFO
+    io.swagger.v3: DEBUG

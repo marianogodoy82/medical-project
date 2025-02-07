@@ -16,11 +16,12 @@ public class MedicalRecordService {
       return repository.save(medicalRecord);
    }
 
-   public List<MedicalRecord> getMedicalRecordsByUser(String userEmail) {
-      return repository.findByUserEmail(userEmail);
-   }
-
-   public List<MedicalRecord> getMedicalRecordsByDoctor(String doctorId) {
-      return repository.findByDoctorId(doctorId);
+   public List<MedicalRecord> getMedicalRecordsByUser(String userEmail, String role) {
+      return switch (role) {
+         case "USER" -> repository.findByUserEmail(userEmail);
+         case "DOCTOR" -> repository.findByDoctorId(userEmail);
+         case "OPERATOR" -> repository.findAll();
+         default-> throw new RuntimeException("Invalid role");
+      };
    }
 }
