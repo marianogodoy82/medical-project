@@ -27,7 +27,14 @@ public class MedicalRecordController {
    private final MedicalRecordService service;
 
    @PostMapping
-   public ResponseEntity<MedicalRecord> createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+   public ResponseEntity<MedicalRecord> createMedicalRecord(
+         @RequestBody MedicalRecord medicalRecord,
+         @RequestHeader("X-User-Email") String userEmail,
+         @RequestHeader("X-User-Roles") String userRoles) {
+
+      if (userEmail == null || !"USER".equals(userRoles)) {
+         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+      }
       return ResponseEntity.ok(service.createMedicalRecord(medicalRecord));
    }
 

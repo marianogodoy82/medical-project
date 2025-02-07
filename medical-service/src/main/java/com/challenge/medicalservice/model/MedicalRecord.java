@@ -1,6 +1,7 @@
 package com.challenge.medicalservice.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,7 +15,7 @@ public record MedicalRecord(
       String id,
       String userEmail,
       String doctorId,
-      String diagnosis,
-      String treatment,
-      LocalDateTime createdAt
+      String name,
+      LocalDateTime createdAt,
+      List<Question> medicalQuestions
 ) { }
